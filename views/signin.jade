@@ -1,0 +1,16 @@
+extends layout
+
+block content
+	div.container.row-fluid
+		div.boxShadow.mediaBox#loginBox
+			br
+			
+			a(href='/auth/google', title='google')
+				img(src='img/g-login.png')
+			a(href='/auth/facebook', title='facebook')
+				img(src='img/f-login.png')
+			a(href='/auth/twitter', title='twitter')
+				img(src='img/t-login.png')
+			p(style='margin-top: 16px; margin-left:35px; margin-right:35px; color:#52BAB5; text-align:center') de tener alguna duda favor llamar al #{br} #{b} 1-800-981-7575
+
+

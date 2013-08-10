@@ -1,0 +1,37 @@
+extends layout
+
+block content
+	script.
+		$(document).ready(function(){
+			if(!$('#email').val()){
+				$('#profileAlert').removeClass('hide');
+			}
+			if($('#phone').val() === "null"){
+				$('#phone').val('');
+			}
+		})
+	div#profileContainer.container.shadowBox.centeredBox
+		.accordion#accordion1
+			.accordion-group
+				.accordion-heading
+					a.accordion-toggle(data-toggle='collapse', data-parent:'#accordion1', href='#profileData', style='color:black') Perfíl
+				.accordion-body#profileData.collapse.in
+					.alert#profileAlert.hide
+						button.close(type='button', data-dismiss='alert')
+						|  Favor de Completar su Perfíl para poder participar.
+					form.form-horizontal(action='/profileUpdate', method='post', enctype='multipart/form-data', style='margin-top:40px; margin-bottom:50px; padding-left: 120px')
+						div.control-group
+							label.control-label(for='name') Nombre
+							div.controls
+								input#name(type='text', name='name', disabled, value='#{profileData.user.name}', required)
+						div.control-group
+							label.control-label(for='email') Email
+							div.controls
+								input#email(type='email', name='email', value='#{profileData.user.email}', required)
+						div.control-group
+							label.control-label(for='telefono') Teléfono
+							div.controls
+								input#phone(type='text', name='phone', value='#{profileData.user.phone}', required)
+						div.control-group
+							div.controls
+								button.btn.btn-primary#submitBTN(type='submit') Guardar

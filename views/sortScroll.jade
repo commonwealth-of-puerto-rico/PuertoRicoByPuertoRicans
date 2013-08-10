@@ -1,0 +1,45 @@
+
+block content	
+
+	#galleryContainer.parent-container
+		each item, i in content
+
+			- var current = color;
+			div.imageItem.isotope-item(class=item.categories, id=item.publicID, style='border-color:'+(current == '1' ? '#97bf4f' 
+				: (current == '2' ? '#44b0aa' 
+					: (current == '3' ? '#954f98' 
+						: (current == '4' ? '#6a6c70' 
+							: (current == '5' ? '#8b0004' 
+								: (current == '6' ? '#1db4e6' 
+									: (current == '7' ? '#30367e' 
+										: (current == '8' ? '#3a7cac' 
+											: (current == '9' ? '#db4696' 
+												: (current == '10' ? '#f0e629' 
+													: (current == '11' ? '#997f65' 
+														: (current == '12' ? '#dc1d2a' 
+															: (current == '13' ? '#ee5f2a' : '#fffff'))))))))))))))
+				#insert.mouseOver1.hide
+					.insertBackground
+					#insertContent1
+						#titleInsert
+							p #{item.title}
+							p.hide.created #{item.created}
+
+						#mediaIcon
+							-if(item.type == 1 || item.type == 4 || item.type == 5)
+								i.icon-camera(style='background-image: url("../img/glyphicons-halflings-white.png");')
+							-if(item.type == 2 || item.type == 3)
+								i.icon-facetime-video(style='background-image: url("../img/glyphicons-halflings-white.png");')
+							-if(item.type == 6)
+								i.icon-book(style='background-image: url("../img/glyphicons-halflings-white.png");')
+				#insert.mouseOver2.hide
+					.insertBackground
+					#insertContent2
+						p.voteCount#votesPlaceholder votos: #{item.votes.length}
+						a.voteSingle#voteSingleBTN.starIcon(href='#', publicID=item.publicID)
+							img#voteImage(src='/img/voteStar.png')
+						div.starIcon
+							img#votedEntry.hide(src='/img/voteStar_gray.png')
+				a(href='/entry/'+item.publicID)
+					img(src=item.thumbnail_url, rel='lightbox', onerror='this.onerror = null; this.src="/img/thumbnail-fallback.png"')
+			

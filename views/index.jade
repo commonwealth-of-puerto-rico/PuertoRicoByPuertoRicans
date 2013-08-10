@@ -1,0 +1,34 @@
+extends layout
+title= 'Bienvenidos'
+
+	
+
+block content	
+	script.
+		$(document).ready(function(){
+			$('.toHide').remove();
+			//$('body').css('background'," url('/img/bgDark.png')");
+		})
+	#modalEffect
+	.container.centeredBox.boxShadow#indexAuxBox
+		div#indexAux
+			img(src='/img/logo.png')
+			br
+			br
+			h1 ¡Pon a Puerto Rico en el Mapa!
+			h2 Comparte lo mejor de nuestra isla con el mundo
+			br
+			br
+		table(style='width:100%')
+			tr
+				td(style='width:40%')
+					#indexAuxParticipa
+						a(href='/participa')
+							h3 PARTICIPA
+				td(style='width:10%')
+				td(style='width:40%')
+					#indexAuxGaleria
+						a(href='/galeria')
+							h3 GALERIA
+		br
+		br

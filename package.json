@@ -1,0 +1,30 @@
+{
+  "name": "PuertoRicoforPuertiricans",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app"
+  },
+  "dependencies": {
+    "express": "3.0.5",
+    "jade": "~0.31.0",
+    "async": "~0.1.22",
+    "mongodb": "~1.2.7",
+    "mongoose":"3.6.x",
+    "stylus": "~0.32.0",
+    "passport": "~0.1.15",
+    "passport-facebook":"0.1.5",
+    "passport-twitter":"0.1.5",
+    "passport-google-oauth" : "0.1.5",
+    "emailjs": "~0.3.4",
+    "jsdom":"0.6.5",
+    "connect-ensure-login" : "*",
+    "sendgrid":"0.2.7",
+    "knox" : "*",
+    "gm" : "*"
+  },
+    "engines": {
+    "node": "0.10.8",
+    "npm": "1.2.x"
+  }
+}

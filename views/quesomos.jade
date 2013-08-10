@@ -1,0 +1,41 @@
+extends layout
+
+block content
+	//div.centeredBox.boxShadow#queSomosBox
+	.container.centeredBox.boxShadow#queSomosBox
+		#queSomosContent
+			img.centeredImage(src='/img/logo.png')
+			p Por la Compañia de Turismo de Puerto Rico.
+			br
+			div#dotedLine
+			h2 Quién mejor que los puertorriqueños para dejarle saber al mundo todo lo bueno y hermoso que hay en nuestra isla
+			div#dotedLine
+			br
+			p De esta realidad nace Puerto Rico by Puerto Ricans. Un portal donde compartes fotos, vídeos y blogs sobre tus experiencias y viajes por Puerto Rico.
+			p Nuestra meta es que el mundo entero conozca a Puerto Rico a través de tus ojos. Formar un movimiento donde el turismo interno sea el más poderoso embajador del país ante el mundo.
+			br
+			h3 Participa y podrías ganar
+			table#queSomosPremios
+				tr
+					td
+						a(href='/patrocinadores')
+							img(src='/img/quesomos2.png')
+						p Estadías en Paradores y Hoteles de Puerto Rico
+					td
+						a(href='/patrocinadores')
+							img(src='/img/quesomos3.png')
+						p Excursiones para aventurarte a explorar nuestra isla
+			h3 De algunos de nuestros Patrocinadores	
+			img(src='/img/patrocinadores.png')
+			br
+		#masDetalles
+			p Más detalles de los premios en la sección
+				a(href='/participa')  PARTICIPA
+				|  y en las
+				a(href='/terminos')  REGLAS
+		#participaFinal
+			br	
+			h4 ¡Así que pasea por nuestro Puerto Rico, comparte y 
+				a(href='/participa') participa!
+		div#dotedLine2.pull-left
+		div#dotedLine3.pull-right

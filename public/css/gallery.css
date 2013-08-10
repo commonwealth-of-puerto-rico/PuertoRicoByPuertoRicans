@@ -1,0 +1,215 @@
+/*Gallery Full Container - Centering purposes*/
+#galleryContainer{
+	height: 100%;
+	position: relative;
+	margin: 0 auto;
+	margin-top: 40px;
+}
+
+/*Class Representation for each gallery item*/
+.imageItem{
+	width: 320px;
+	margin: 0 auto;
+	margin: 5px;
+	float: left;
+	border: 6px solid #ffffff;
+	-webkit-border-radius: 5px;
+	   -moz-border-radius: 5px;
+	        border-radius: 5px;
+}	
+
+/*"hack" for secondary css border*/
+.imageItem img{
+	width: 316px;
+	border: 2px solid #ffffff;
+}
+
+
+/* Hover Boxes */
+.insertBackground{
+	background: #000000;
+	opacity: 0.6;
+	width: 100%;
+	height: 100%;
+}
+#insert{
+	height: 36px;
+	width: 316px;
+	position: absolute;
+	z-index: 100px;
+}
+
+.mouseOver1{
+	top: 2px;
+	margin-left: 2px;
+}
+
+.mouseOver2{
+	bottom: 2px;
+	margin-left: 2px;
+}
+
+#insertContent1{
+	font-size: 12px;
+	z-index: 100;
+	position: absolute;
+	top: 2px;
+	color: #ffffff;
+	margin-left: 8px;
+	margin-top: 8px;
+}
+
+#insertContent2{
+	font-size: 12px;
+	z-index: 100;
+	position: absolute;
+	bottom: 2px;
+	color: #ffffff;
+	margin-left: 8px;
+	margin-top: 8px;
+	width: 100%;
+}
+
+#titleInsert{
+	width: 280px;
+	height:100%;
+	position: relative;
+	float: left;
+	overflow: hidden;
+	
+}
+
+#titleInsert p{
+	height: 14px;
+	overflow: hidden;
+}
+#mediaIcon{
+	top:-2px;
+	width: 20px;
+	position: relative;
+	float: right;
+}
+
+#votesPlaceholder{
+	z-index: 101;
+	position: relative;
+	width: 260px;
+	margin: 0px;
+	top: 14px;
+	bottom: 0px;
+
+}
+
+/*#voteImage:hover{
+	background-image: url('/img/voteStar_gray.png');
+}*/
+
+#voteImage, #votedEntry{
+	border: none;
+}
+
+
+#voteSingleBTN{
+	width: 19px;
+	height: 19px;
+}
+
+/*#voteSingleBTN:hover{
+	background-image: url('/img/voteStar_gray.png');
+}*/
+.starIcon{
+	float:right;
+	position:relative;
+	width:20px;
+	right: 20px;
+	bottom: 6px;
+	border: none;
+}
+
+/*Hover Content END*/
+
+
+
+/*Ajax Loader*/
+#loader{
+	text-align: center;
+	margin-top: 200px;
+}
+
+#filters a:hover{
+  background: gray;
+}
+
+#filters a{
+	font-family: RockwellStd;
+	font-weight: normal;
+	font-style: normal;
+	border-bottom: 1px solid #a5a5a5;
+}
+
+#allBorder{
+	border-top: 1px solid #a5a5a5;	
+}
+
+
+
+/*Isotope Stuff
+*/.isotope-item {
+  z-index: 2;
+}
+
+.isotope-hidden.isotope-item {
+  pointer-events: none;
+  z-index: 1;
+}
+
+
+/**** Isotope CSS3 transitions ***
+*/
+/*.isotope,
+.isotope .isotope-item {
+  -webkit-transition-duration: 0.8s;
+     -moz-transition-duration: 0.8s;
+      -ms-transition-duration: 0.8s;
+       -o-transition-duration: 0.8s;
+          transition-duration: 0.8s;
+}
+
+.isotope {
+  -webkit-transition-property: height, width;
+     -moz-transition-property: height, width;
+      -ms-transition-property: height, width;
+       -o-transition-property: height, width;
+          transition-property: height, width;
+}
+
+.isotope .isotope-item {
+  -webkit-transition-property: -webkit-transform, opacity;
+     -moz-transition-property:    -moz-transform, opacity;
+      -ms-transition-property:     -ms-transform, opacity;
+       -o-transition-property:      -o-transform, opacity;
+          transition-property:         transform, opacity;
+}
+*/
+
+
+/*index splash page stuff*/
+
+#splashPage, #myModal{
+	background-image: url('/img/splash.png');
+	width: 600px;
+	height: 444px;
+	margin-right: 50%;
+}
+
+#hrefParticipa{
+	width: 100%;
+	height: 66px;
+	margin-top: 320px;
+}
+
+#hrefParticipa a{
+	width: 100%;
+	height: 100%;
+	display: block;
+}

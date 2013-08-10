@@ -1,0 +1,310 @@
+extends layout
+
+
+block content
+	script.
+		$(document).ready(function(){
+			$('#UploadGroup').hide();
+			$('#urlGroup').hide();
+			$('.metaData').hide();
+		});
+
+	script.
+		$(document).ready(function(){
+			var type; 
+			var listOfCategories = [];
+			var thumbnail_url;
+			var aux;
+			$('#showPreview').on('click',function(){
+				$('#mediaPreview').removeClass('hide');
+				$('#showPreview').addClass('hide');
+				$('#closePreview').removeClass('hide');
+			});
+			$('#closePreview').on('click',function(){
+				$('#mediaPreview').addClass('hide');
+				$('#showPreview').removeClass('hide');
+				$('#closePreview').addClass('hide');
+			});
+			$('#media_url').change(function(){
+				$('#mediaPreview').empty();
+				$('#showPreview').addClass('hide');
+				$('#closePreview').addClass('hide');
+				
+				var fieldValue = $('#media_url').val();
+				var imageResult = fieldValue.match(/(https?:\/\/.*\.(?:png|jpg))/i);
+				var youtubeResult = fieldValue.match(/^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/i);
+				var vimeoResult = fieldValue.match(/vimeo\.com\/\d+$/);
+				var instagramResult = fieldValue.match(/instagram\.com\/p\//);
+				var pinterestResult = fieldValue.match(/pinterest\.com\/pin\//);
+				var panoramioResult = fieldValue.match(/panoramio\.com\/photo\//);
+				var facebookResult = fieldValue.match(/facebook\.com/);
+				var elseResult = fieldValue.match(/(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/);
+				//
+				if(imageResult != null){
+					$('#type').val('1');
+					thumbnail_url = fieldValue;
+					$('#mediaPreview').prepend('<img id="previewContent" style="width:284px;margin-top:10px "src="'+fieldValue+'"/>');
+					$('#showPreview').removeClass('hide');
+					$('#thumbnail_url').val(thumbnail_url);
+				}
+				else if(youtubeResult !=null){
+					video_id = fieldValue.split('v=')[1];
+					var ampersandPosition = video_id.indexOf('&');
+					if(ampersandPosition != -1) {
+						video_id = video_id.substring(0, ampersandPosition);
+					}
+					$('#type').val('2');
+					$('#aux').val(video_id);
+					thumbnail_url = 'http://img.youtube.com/vi/'+video_id+'/0.jpg';
+					$('#mediaPreview').prepend('<img id="previewContent" style="width:284px;margin-top:10px "src="'+thumbnail_url+'"/>');
+					$('#showPreview').removeClass('hide');
+					$('#thumbnail_url').val(thumbnail_url);
+				}
+				else if(vimeoResult != null){
+					vimeoVideoID = fieldValue.match(/(\d+)/);
+					$.ajax({
+						url: 'http://vimeo.com/api/v2/video/' + vimeoVideoID[0] + '.json',
+						dataType: 'jsonp',
+						success: function(data) {
+							thumbnail_url = data[0].thumbnail_large;
+							$('#mediaPreview').prepend('<img id="previewContent" style="width:284px;margin-top:10px "src="'+thumbnail_url+'"/>');
+							$('#showPreview').removeClass('hide');
+						}	
+					});
+					$('#type').val('3');
+					$('#aux').val(vimeoVideoID[0]);
+					$('#thumbnail_url').val(thumbnail_url);
+				}
+				//
+				else if(instagramResult != null){
+					var firstSplit = fieldValue.split('/p/');
+					var key = ''+firstSplit[1];
+					key = key.substring(0, key.length - 1);
+					$.ajax({
+						url:'/instagram/'+ key,
+						dataType:'text',
+						success:function(photoURL){
+							$('#aux').val(photoURL);
+							thumbnail_url = photoURL;
+							$('#type').val('4');
+							$('#mediaPreview').prepend('<img id="previewContent" style="width:284px;margin-top:10px "src="'+thumbnail_url+'"/>');
+							$('#showPreview').removeClass('hide');
+							$('#thumbnail_url').val(thumbnail_url);
+						}
+					})
+				}
+				else if(pinterestResult != null){
+					var firstSplit = fieldValue.split('/pin/');
+					var pin = ''+firstSplit[1];
+					pin = pin.substring(0, pin.length - 1);
+					$.ajax({
+						url:'/pinterest/'+ pin,
+						dataType:'text',
+						success:function(photoURL){
+							$('#aux').val(photoURL);
+							thumbnail_url = photoURL;
+							$('#type').val('5');
+							$('#mediaPreview').prepend('<img id="previewContent" style="width:284px;margin-top:10px "src="'+thumbnail_url+'"/>');
+							$('#showPreview').removeClass('hide');
+							$('#thumbnail_url').val(thumbnail_url);
+							
+						}
+					})	
+				}
+				else if(panoramioResult != null){
+					var firstSplit = fieldValue.split('/photo/');
+					var photoID = ''+firstSplit[1];
+					$.ajax({
+						url:'/panoramio/'+photoID,
+						dataType:'text',
+						success:function(photoURL){
+							$('#aux').val(photoURL);
+							thumbnail_url = photoURL;
+							$('#type').val('7');
+							$('#mediaPreview').prepend('<img id="previewContent" style="width:284px;margin-top:10px "src="'+thumbnail_url+'"/>');
+							$('#showPreview').removeClass('hide');
+							$('#thumbnail_url').val(thumbnail_url);
+						}
+					})
+				}
+				else if(facebookResult != null){
+					alert('¿Fotos de Facebook? En este momento no podemos añadir fotos directamente de Facebook. \n\nFavor de grabarla en su computadora, móvil o tableta y subirla por la funcionalidad de uploads. \n\nGracias. \n\n -PuertoRicobyPuertoRicans Team');
+					$('#media_url').val('');
+				}
+				else if(elseResult != null){
+					$('#type').val('6');
+					thumbnail_url = '/img/logo.png';
+					$('#aux').val('/img/logo.png');
+					$('#mediaPreview').prepend('<iframe src="'+fieldValue+'"width:"600px"; height="400">"</iframe>');
+					$('#showPreview').removeClass('hide');
+					$('#submitBTN').removeClass('hide');
+					$('#thumbnail_url').val(thumbnail_url);
+				}
+				else{
+					$('#typeLabel').removeClass('hide').addClass('label-important').text('!');
+				}
+			});
+		});
+
+	#participaBox
+		div.container.centeredBox.boxShadow
+			.accordion#accordion1
+				.accordion-group
+					.accordion-heading.RockwellStd
+						a.accordion-toggle(data-toggle='collapse', data-parent='#accordion1', href='#collapse1') INSTRUCCIONES
+					#collapse1.accordion-body.collapse.in
+						.accordion-inner
+							include pasos
+				.accordion-group
+					.accordion-heading.RockwellStd
+						a.accordion-toggle(data-toggle='collapse', data-parent='#accordion1', href='#collapse2') PARTICIPA
+					#collapse2.accordion-body.collapse
+						.accordion-inner
+							div#entryForm
+								form.form-horizontal(action='/newentry', method='post', name='newEntryForm', enctype="multipart/form-data")
+									fieldset
+										.control-group
+											#selectorContainer
+												#uploadTrigger.formBox
+													a(href='#') Subir Foto
+												#urlTrigger.formBox
+													a(href='#') Compartir Enlace
+										.control-group#urlGroup
+											label.control-label Enlace(URL)
+											.controls
+												input#media_url.input-xlarge(name='url', type='text', placeholder='www.example.com/picture.jpg')
+												br 
+												a#showPreview.hide(href="#") Ver Contenido
+												div#mediaPreview.hide
+												a#closePreview.hide(href="#") Cerrar
+										.control-group#UploadGroup
+											label.control-label Upload (.jpg)
+											.controls
+												input#img_field(type='file', name='img')
+										.control-group.metaData
+											label.control-label Título
+											.controls
+												input#title.input-xlarge(name='title', type='text', placeholder='', required)
+												input#type(type='hidden', name='type', value = '')
+												input#aux(type='hidden', name='aux', value='')
+												input#thumbnail_url(type='hidden',name='thumbnail_url',value='')
+										.control-group.metaData
+											label.control-label Descripción
+											.controls
+												textarea#description(name='description')
+										.control-group.metaData
+											label.control-label Categorías
+											.controls
+												table#categoryTable
+													tr
+														td
+															label.checkbox.inline
+																input#category(type='checkbox', name='category', valu e='1')
+																| Playas
+														td
+															label.checkbox.inline
+																input#category(type='checkbox', name='category', value='2')
+																| Paisajes
+														td(style='margin-left:10px')
+															label.checkbox.inline
+																input#category(type='checkbox', name='category', value='3')
+																| Gente
+													tr
+														td
+															label.checkbox.inline
+																input#category(type='checkbox', name='category', value='4')
+																| Íconos de PR
+														td
+															label.checkbox.inline
+																input#category(type='checkbox', name='category', value='5')
+																| Cultura
+														td
+															label.checkbox.inline
+																input#category(type='checkbox', name='category', value='6')
+																| Histórico
+													tr
+														td
+															label.checkbox.inline
+																input#category(type='checkbox', name='category', value='7')
+																| Urbano
+														td
+															label.checkbox.inline
+																input#category(type='checkbox', name='category', value='8')
+																| Pueblos
+														td
+															label.checkbox.inline
+																input#category(type='checkbox', name='category', value='9')
+																| Flora y Fauna    
+													tr	
+														td
+															label.checkbox.inline
+																input#category(type='checkbox', name='category', value='10')
+																| Gastronomía
+														td
+															label.checkbox.inline
+																input#category(type='checkbox', name='category', value='11')
+																| Festividades
+														td
+															label.checkbox.inline
+																input#category(type='checkbox', name='category', value='12')
+																| Arquitectura
+													tr
+														td
+															label.checkbox.inline
+																input#category(type='checkbox', name='category', value='13')
+																| Deportes
+										.control-group.metaData
+											label.control-label Representaciones y Garantías del Participante
+												br
+												a(href='http://creativecommons.org/licenses/by/3.0/pr/legalcode', target='_blank')
+													img(src='/img/cc.png')
+											.controls
+												label.checkbox
+													p.Trebuchet El PARTICIPANTE representa y garantiza que (i) es el único dueño de los derechos de propiedad intelectual y de autor sobre la Obra; (ii) no hay otras personas que tengan o pudieran reclamar tener un derecho de propiedad intelectual sobre la Obra; (iii) el PARTICIPANTE puede legalmente transferir los derechos aquí concedidos, sobre dicha propiedad intelectual.
+													input#TermsCheckBox(type='checkbox', name='termsAndConditions', value='termsAndConditions', required)
+													//b Acepto los Términos y Condiciones 
+													a(href='/terminos', target='_blank') Acepto los Términos y Condiciones 
+										button.btn.RockwellStd.pull-right.hide#submitBTN(type='submit') SOMETER
+				.accordion-group
+					.accordion-heading.RockwellStd
+						a.accordion-toggle(data-toggle='collapse', data-parent='#accordion1', href='#collapse3') PREMIOS
+					#collapse3.accordion-body.collapse(style='border-bottom:0px')
+						.accordion-inner(style='border-bottom:0px')
+							include premios
+				.accordion-group
+					.accordion-heading.RockwellStd
+						a.accordion-toggle(data-toggle='collapse', data-parent='#accordion1', href='#collapse4') REGLAS
+					#collapse4.accordion-body.collapse(style='border-bottom:0px')
+						.accordion-inner(style='border-bottom:0px')
+							include instrucciones
+	script.
+		$('#TermsCheckBox').click(function(){
+			if($('#TermsCheckBox').attr('checked',true)){
+				$('#submitBTN').removeClass('hide');
+			}
+			else{
+				$('#submitBTN').addClass('hide');
+			}
+		})
+	script.
+		$('#uploadTrigger').click(function(){
+			$('#UploadGroup').fadeIn();
+			$('#urlGroup').hide();
+			$('#media_url').val("");
+			$('#showPreview').addClass('hide');
+			$('#mediaPreview').addClass('hide');
+			$('#closePreview').addClass('hide');
+			$('#media_url').attr('required',false);
+			$('#img_field').attr('required',true);
+			$('.metaData').fadeIn();
+		})
+		$('#urlTrigger').click(function(){
+			$('#media_url').attr('required',true);
+			$('#img_field').attr('required',false);
+			$('#UploadGroup').hide();
+			$('#img_field').val("");
+			$('#urlGroup').fadeIn();
+			$('.metaData').fadeIn();
+		})
+	//include footer
+						

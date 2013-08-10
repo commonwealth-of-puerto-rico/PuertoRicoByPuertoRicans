@@ -1,0 +1,153 @@
+extends layout
+
+block content
+
+	script.
+		$(document).ready(function(){
+			//$('#next, #prev').hide();
+			var facebookLink = $('#thisFB').attr('href');
+			$('#facebookShareBTN').attr('href',facebookLink);
+			$('#voteSingle').on('click',function(event){
+				var id = $(this).attr('publicID');
+				var sendData = { 'path' : window.location.pathname}
+				$.post('/vote/'+id, sendData, function(info){
+					if(info === 200){
+						window.location.href = '/galeria';
+					}
+					if(info === 400){
+						window.location.href = '/entrar';
+					}
+					if(info === 406){
+						$('#error').w('hidden');
+					}
+				});
+			});
+		});
+	script.
+		//$('#mediaViewPhoto').hover(function(){alert('imIn')},function(){alert('imout')})
+
+	div.mediaBox
+		//a#next(href='#')
+		//a#prev(href='#')
+		div.centered(style='z-index:100')	
+			-if(entry.type == 1)
+				img#mediaViewPhoto(src=entry.media_url,onerror='this.onerror = null; this.src="/img/thumbnail-fallback.png"')
+			-if(entry.type == 2)
+				iframe#mediaViewVideo(width='600', height='355', src='http://www.youtube.com/embed/'+entry.aux, frameborder='0', allowfullscreen='allowfullscreen')
+			-if(entry.type == 3)
+				iframe#mediaViewVideo(src='http://player.vimeo.com/video/'+entry.aux, width='600', height='355', frameborder='0', webkitallowfullscreen='webkitAllowFullScreen', mozallowfullscreen='mozallowfullscreen', allowfullscreen='allowFullScreen')
+			-if(entry.type == 4)
+				img#mediaViewPhoto(src=entry.aux,onerror='this.onerror = null; this.src="/img/thumbnail-fallback.png"')
+			-if(entry.type == 5)
+				img#mediaViewPhoto(src=entry.aux,onerror='this.onerror = null; this.src="/img/thumbnail-fallback.png"')
+			-if(entry.type == 6) //blog
+				iframe#mediaViewVideo(src=entry.media_url, width='600', height='800')
+			-if(entry.type == 7)
+				img#mediaViewPhoto(src=entry.aux,onerror='this.onerror = null; this.src="/img/thumbnail-fallback.png"')
+		br
+		div.alert.alert-error.hidden#error
+			button.close(type='button', data-dismiss='alert') x
+			Strong Solo es permitido votar una vez por cada participación.
+		div.mediaInfo.container
+			div#mediaTitle.RockwellStd
+				h2#pageTitle(title='#{entry.title}', style='margin-bottom:0px;width:560px;') #{entry.title}
+			div#mediaMetaData.container
+				.btn-group.pull-right(style='padding-top:20px; width:240px')
+					if !voted
+						a.btn#voteSingle.RockwellStd(publicID=entry.publicID)
+							img(src='/img/voteStar.png')
+					else
+						a.btn#voteSingle.RockwellStd.disabled(publicID=entry.publicID)
+							img(src='/img/voteStar_gray.png')
+					-var auxImage
+						-if(entry.type == 1)
+							if(auxImage = entry.media_url.indexOf(entry.publicID) > -1)
+								auxImage = "http://puertoricobypuertoricans.com"+ entry.media_url
+							else
+								auxImage = entry.media_url
+						-if(entry.type == 2)
+							auxImage = entry.thumbnail_url
+						-if(entry.type == 3)
+							auxImage = entry.thumbnail_url
+						-if(entry.type == 4)
+							auxImage = entry.aux
+						-if(entry.type == 5)
+							auxImage = entry.aux
+						-if(entry.type == 6) //blog
+							auxImage = entry.media_url
+						-if(entry.type == 7)
+							auxImage = entry.aux
+					-var facebookLink = 'http://www.facebook.com/sharer.php?s=100&p[title]='+entry.title+'&p[summary]='+entry.description+'&p[url]=http://puertoricobypuertoricans.com/entry/'+entry.publicID+'&p[images][0]='+auxImage
+					//a.btn(href='#', onclick="window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href), 'fb-share-dialog', 'width=626,height=436'); return false;")
+					//-var facebookLink = "https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href)";
+					a.btn#thisFB(href=facebookLink, target="_blank", onclick="return !window.open(this.href, 'Facebook', 'width=640,height=300')")
+						img(src='/img/shareFB.png')
+					a.btn.twitter-share-button(href="https://twitter.com/share", class="twitter-share-button", data-count="none", target="_blank")
+						img(src='/img/shareTW.png')
+					a.btn(href='https://plus.google.com/share?url=http://puertoricobypuertoricans.com/entry/'+publicID, onclick="javascript:window.open(this.href,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;")
+						img(src='/img/shareG+.png', alt='Share on Google+')
+
+
+
+				div#categoriesDisplay
+					ul
+					each cat in entry.categories
+						case cat
+							when 1: li Playas
+							when 2: li Paisajes
+							when 3: li Gente
+							when 4: li Íconos de PR
+							when 5: li Cultura
+							when 6: li Histórico
+							when 7: li Urbano
+							when 8: li Pueblos
+							when 9: li Flora y Fauna
+							when 10: li Gastronomía
+							when 11: li Festividades
+							when 12: li Arquitectura
+							when 13: li Deportes
+
+				div#votesDisplay.RockwellStd
+					h4 votos: #{entry.votes.length}
+				br
+				div(style='font-size:10px; line-height:12px; width:88px;float:right')
+					a(rel='license', href='http://creativecommons.org/licenses/by/3.0/pr/deed.en_US')
+					img(alt='Creative Commons License', style='border-width: 0;', src='http://i.creativecommons.org/l/by/3.0/pr/88x31.png')
+					br
+					| This work is licensed under a 
+					br
+					a(rel='license',target="_blank", href='http://creativecommons.org/licenses/by/3.0/pr/deed.en_US')  Creative Commons Attribution 3.0 Puerto Rico License.
+
+			div#mediaDescription
+					p(style='font-style:italic; font-size:12px; font-color:gray; margin-top') Por: #{user.name}
+					p(style='margin-top:20px') #{entry.description}
+	script.
+		$('.btn-categorias').click(function(){
+			window.location = '/galeria';
+		})
+	script.
+		$('#next').click(function(){
+			var id = $('#voteSingle').attr('publicID');
+			var getNext = $.ajax({
+				url: '/getNext/'+id,
+				dataType:'text'
+			});
+			getNext.done(function(next){
+				window.location.href = '/entry/'+next 
+			})
+		})
+	script.
+		$('#prev').click(function(){
+			var id = $('#voteSingle').attr('publicID');
+			var getNext = $.ajax({
+				url: '/getPrev/'+id,
+				dataType:'text'
+			});
+			getNext.done(function(next){
+				window.location.href = '/entry/'+next 
+			})
+		})
+	script.
+		//!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+	include footer		
+			
